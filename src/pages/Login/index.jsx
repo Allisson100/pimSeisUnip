@@ -17,9 +17,11 @@ import { FaStoreAlt } from "react-icons/fa";
 
 import * as Yup from "yup";
 import { Form, FormikProvider, useFormik } from "formik";
+import useLogin from "../../hooks/services/useLogin";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const { fetchLogin } = useLogin();
 
   const handleShowPassword = () => {
     setShowPassword((prevState) => !prevState);
@@ -40,8 +42,8 @@ const Login = () => {
       password: "",
     },
     validationSchema: signinValidationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      await fetchLogin(values);
     },
   });
 
