@@ -2,10 +2,13 @@ import { useContext, useState } from "react";
 import { SnackBarContext } from "../../contexts/SnackBarContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const useLogin = () => {
   const { setSnackBarMessage } = useContext(SnackBarContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { getUserDatas } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -19,10 +22,12 @@ const useLogin = () => {
 
       if (response?.data?.success && response?.data?.token) {
         localStorage.setItem("PIMIVJWT", response.data.token);
+        getUserDatas();
         setSnackBarMessage({
           message: response?.data?.message || "Login efetuado com sucesso.",
           severity: "success",
         });
+
         navigate("/");
       } else {
         throw new Error(response?.data?.message || "Erro ao iniciar sessão");
