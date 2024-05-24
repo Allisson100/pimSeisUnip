@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }) => {
     email: "",
     name: "",
     permission: "",
+    permissionPaths: "",
+    loading: true,
   });
 
   const getUserDatas = () => {
@@ -28,6 +30,7 @@ export const AuthProvider = ({ children }) => {
           name: decoded?.name || null,
           permission: decoded?.permission || null,
           permissionPaths: decoded?.permissionPaths || null,
+          loading: false,
         };
 
         return newObj;
