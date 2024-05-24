@@ -66,14 +66,16 @@ const MenuList = () => {
   return (
     <List sx={{ paddingTop: 0 }}>
       {menuList
-        .filter((item) => item.permission.includes(userDatas.permission))
+        .filter((item) =>
+          userDatas?.permissionPaths?.endpoints?.frontMenu?.includes(item?.path)
+        )
         .map((item, index) => (
           <Link
             to={item.path}
             style={{ textDecoration: "none", color: "inherit" }}
+            key={index}
           >
             <ListItem
-              key={index}
               disablePadding
               sx={{ backgroundColor: pathname === item.path && "#f0eeee" }}
             >

@@ -22,12 +22,15 @@ export const AuthProvider = ({ children }) => {
 
     if (Object.keys(decoded).length !== 0) {
       setUserDatas(() => {
-        return {
+        const newObj = {
           cpf: decoded?.cpf || null,
           email: decoded?.email || null,
           name: decoded?.name || null,
           permission: decoded?.permission || null,
+          permissionPaths: decoded?.permissionPaths || null,
         };
+
+        return newObj;
       });
     } else {
       localStorage.removeItem("PIMIVJWT");
