@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import DefaultPage from "../components/RouterComponents/DefaultPage";
 import PrivateRoute from "../components/RouterComponents/PrivateRoute";
+import Products from "../pages/Products";
 
 const AppRouter = () => {
   return (
@@ -25,7 +26,7 @@ const AppRouter = () => {
           path="/products"
           element={
             <PrivateRoute>
-              <Home />
+              <Products />
             </PrivateRoute>
           }
         />

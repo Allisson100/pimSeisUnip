@@ -24,26 +24,34 @@ export const AuthProvider = ({ children }) => {
   const getUserDatas = () => {
     const jwtToken = localStorage.getItem("PIMIVJWT");
 
-    const decoded = jwtDecode(jwtToken);
+    if (jwtToken) {
+      const decoded = jwtDecode(jwtToken);
 
-    if (Object.keys(decoded).length !== 0) {
-      setUserDatas(() => {
-        const newObj = {
-          cpf: decoded?.cpf || null,
-          email: decoded?.email || null,
-          name: decoded?.name || null,
-          permission: decoded?.permission || null,
-          permissionPaths: decoded?.permissionPaths || null,
-          loading: false,
-        };
+      if (Object.keys(decoded).length !== 0) {
+        setUserDatas(() => {
+          const newObj = {
+            cpf: decoded?.cpf || null,
+            email: decoded?.email || null,
+            name: decoded?.name || null,
+            permission: decoded?.permission || null,
+            permissionPaths: decoded?.permissionPaths || null,
+            loading: false,
+          };
 
-        localStorage.setItem("PIMIVJWT-userDatas", JSON.stringify(newObj));
+          localStorage.setItem("PIMIVJWT-userDatas", JSON.stringify(newObj));
 
-        return newObj;
-      });
+          return newObj;
+        });
+      } else {
+        localStorage.removeItem("PIMIVJWT");
+        localStorage.removeItem("PIMIVJWT-userDatas");
+        setSnackBarMessage({
+          message: "Por favor faça o Login novamente!",
+          severity: "error",
+        });
+        navigate("/login");
+      }
     } else {
-      localStorage.removeItem("PIMIVJWT");
-      localStorage.removeItem("PIMIVJWT-userDatas");
       setSnackBarMessage({
         message: "Por favor faça o Login novamente!",
         severity: "error",
