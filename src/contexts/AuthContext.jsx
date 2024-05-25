@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { SnackBarContext } from "./SnackBarContext";
@@ -17,6 +17,10 @@ export const AuthProvider = ({ children }) => {
     loading: true,
   });
 
+  useEffect(() => {
+    getUserDatas();
+  }, []);
+
   const getUserDatas = () => {
     const jwtToken = localStorage.getItem("PIMIVJWT");
 
@@ -33,10 +37,13 @@ export const AuthProvider = ({ children }) => {
           loading: false,
         };
 
+        localStorage.setItem("PIMIVJWT-userDatas", JSON.stringify(newObj));
+
         return newObj;
       });
     } else {
       localStorage.removeItem("PIMIVJWT");
+      localStorage.removeItem("PIMIVJWT-userDatas");
       setSnackBarMessage({
         message: "Por favor faça o Login novamente!",
         severity: "error",

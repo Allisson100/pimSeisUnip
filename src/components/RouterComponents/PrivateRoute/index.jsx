@@ -1,23 +1,22 @@
-import { useContext, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { SnackBarContext } from "../../../contexts/SnackBarContext";
 
 const PrivateRoute = ({ children }) => {
-  const { userDatas } = useContext(AuthContext);
+  const { pathname } = useLocation();
   const { setSnackBarMessage } = useContext(SnackBarContext);
-  const { permission } = userDatas;
 
-  const allowAccess = permission === "supervisor";
+  const userDatas = JSON.parse(localStorage.getItem("PIMIVJWT-userDatas"));
+  const permissions = userDatas?.permissionPaths?.endpoints?.frontMenu;
+  const allowAccess = permissions?.includes(pathname);
 
-  useEffect(() => {
-    if (!allowAccess) {
-      setSnackBarMessage({
-        message: "Essa conta não tem permissão para acessar essa rota.",
-        severity: "error",
-      });
-    }
-  }, []);
+  if (!allowAccess) {
+    setSnackBarMessage({
+      message: "Essa conta não tem permissão para acessar essa rota.",
+      severity: "error",
+    });
+  }
 
   return allowAccess ? children : <Navigate to="/login" />;
 };

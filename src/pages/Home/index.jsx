@@ -5,8 +5,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 const Home = () => {
   const { userDatas } = useContext(AuthContext);
 
-  console.log("userDatas", userDatas);
-
   return (
     <>
       {userDatas.loading ? (
