@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import useProducts from "../hooks/services/useProucts";
 
-export const ProductsContext = createContext();
+export const ProductsContext = createContext("");
 
 export const ProductsProvider = ({ children }) => {
   const { listProducts } = useProducts();
@@ -21,7 +21,12 @@ export const ProductsProvider = ({ children }) => {
 
   return (
     <ProductsContext.Provider
-      value={{ productsList, loadingProducts, getProductsList }}
+      value={{
+        productsList,
+        loadingProducts,
+        getProductsList,
+        setProductsList,
+      }}
     >
       {children}
     </ProductsContext.Provider>

@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import { SnackBarContext } from "../../contexts/SnackBarContext";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../../contexts/AuthContext";
+import { ProductsContext } from "../../contexts/ProductsContext";
 
 const useProducts = () => {
   const { setSnackBarMessage } = useContext(SnackBarContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { setProductsList } = useContext(ProductsContext);
 
   const createProduct = async (datas, resetForm) => {
     setIsLoading(true);
@@ -90,9 +91,39 @@ const useProducts = () => {
     }
   };
 
+  const deleteProduct = async (uuid) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/products/delete/${uuid}`
+      );
+
+      if (response?.data?.success) {
+        setProductsList((prevState) => {
+          const newArray = prevState?.filter((item) => item?.uuid !== uuid);
+          return newArray;
+        });
+        setSnackBarMessage({
+          message: "Produto deletado com sucesso.",
+          severity: "success",
+        });
+      } else {
+        throw new Error(response?.data?.message || "Erro ao deletar produto.");
+      }
+    } catch (error) {
+      setSnackBarMessage({
+        message: error?.message || "Erro ao deletar produto.",
+        severity: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     createProduct,
     listProducts,
+    deleteProduct,
     isLoading,
   };
 };

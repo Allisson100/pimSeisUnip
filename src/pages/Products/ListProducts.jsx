@@ -1,17 +1,28 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import DeleteProductModal from "../../components/Modals/DeleteProduct";
 
 const ListProducts = () => {
   const { productsList, loadingProducts, getProductsList } =
     useContext(ProductsContext);
+  const [uuid, setUuid] = useState("");
 
   useEffect(() => {
     getProductsList();
   }, []);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleOpenModal = (uuid) => {
+    setUuid(uuid);
+    handleOpen();
+  };
 
   return (
     <>
@@ -27,7 +38,7 @@ const ListProducts = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            width: "fit-content",
+            width: "100%",
           }}
         >
           <Box
@@ -36,7 +47,6 @@ const ListProducts = () => {
               marginBottom: "1rem",
               display: "flex",
             }}
-            ne
           >
             <Box width="50%">
               <Link to="/products/create" style={{ textDecoration: "none" }}>
@@ -51,7 +61,6 @@ const ListProducts = () => {
               display: "flex",
               gap: "1rem",
               flexWrap: "wrap",
-              width: "fit-content",
             }}
           >
             {productsList?.map((product) => {
@@ -109,7 +118,11 @@ const ListProducts = () => {
                         },
                       }}
                     >
-                      <IoMdCloseCircle color="red" size={25} />
+                      <IoMdCloseCircle
+                        color="red"
+                        size={25}
+                        onClick={() => handleOpenModal(product?.uuid)}
+                      />
                     </Box>
                   </Box>
 
@@ -253,6 +266,7 @@ const ListProducts = () => {
             })}
           </Box>
         </Box>
+        <DeleteProductModal handleClose={handleClose} open={open} uuid={uuid} />
       </Box>
     </>
   );
