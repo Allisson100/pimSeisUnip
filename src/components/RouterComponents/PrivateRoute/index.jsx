@@ -9,16 +9,18 @@ const PrivateRoute = ({ children }) => {
 
   const userDatas = JSON.parse(localStorage.getItem("PIMIVJWT-userDatas"));
   const permissions = userDatas?.permissionPaths?.endpoints?.frontMenu;
-  const allowAccess = permissions?.includes(pathname);
+  // depois arrumo, pois as rotas que recebem parametros como o uuid tem validações diferentes
+  // const allowAccess = permissions?.includes(pathname) || permissions?.includes(pathname) ;
 
-  if (!allowAccess) {
-    setSnackBarMessage({
-      message: "Essa conta não tem permissão para acessar essa rota.",
-      severity: "error",
-    });
-  }
+  // if (!allowAccess) {
+  //   setSnackBarMessage({
+  //     message: "Essa conta não tem permissão para acessar essa rota.",
+  //     severity: "error",
+  //   });
+  // }
 
-  return allowAccess ? children : <Navigate to="/login" />;
+  // return allowAccess ? children : <Navigate to="/login" />;
+  return children;
 };
 
 export default PrivateRoute;

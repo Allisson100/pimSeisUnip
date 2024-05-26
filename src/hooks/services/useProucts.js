@@ -6,6 +6,7 @@ import { ProductsContext } from "../../contexts/ProductsContext";
 const useProducts = () => {
   const { setSnackBarMessage } = useContext(SnackBarContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
   const { setProductsList } = useContext(ProductsContext);
 
@@ -120,10 +121,67 @@ const useProducts = () => {
     }
   };
 
+  const findProductById = async (uuid) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/products/findbyid/${uuid}`
+      );
+
+      if (response?.data?.success) {
+        setResult(response?.data);
+      } else {
+        throw new Error(response?.data?.message || "Erro ao buscar produto.");
+      }
+    } catch (error) {
+      setSnackBarMessage({
+        message: error?.message || "Erro ao buscar produto.",
+        severity: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const editProducts = async (uuid, values) => {
+    setIsLoading(true);
+    try {
+      const newDatas = {
+        ...values,
+        stock_quantity: parseInt(values?.stock_quantity, 10),
+        warranty: parseInt(values?.warranty, 10),
+      };
+
+      const response = await axios.post(
+        `http://localhost:8000/products/edit/${uuid}`,
+        newDatas
+      );
+
+      if (response?.data?.success) {
+        setSnackBarMessage({
+          message: "Produto editado com sucesso.",
+          severity: "success",
+        });
+      } else {
+        throw new Error(response?.data?.message || "Erro ao editar produto.");
+      }
+    } catch (error) {
+      setSnackBarMessage({
+        message: error?.message || "Erro ao editar produto.",
+        severity: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     createProduct,
     listProducts,
     deleteProduct,
+    findProductById,
+    editProducts,
+    result,
     isLoading,
   };
 };

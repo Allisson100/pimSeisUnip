@@ -3,13 +3,14 @@ import { useContext, useEffect, useState } from "react";
 import { ProductsContext } from "../../contexts/ProductsContext";
 import { IoMdCloseCircle } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteProductModal from "../../components/Modals/DeleteProduct";
 
 const ListProducts = () => {
   const { productsList, loadingProducts, getProductsList } =
     useContext(ProductsContext);
   const [uuid, setUuid] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProductsList();
@@ -22,6 +23,10 @@ const ListProducts = () => {
   const handleOpenModal = (uuid) => {
     setUuid(uuid);
     handleOpen();
+  };
+
+  const handleEdit = (uuid) => {
+    navigate(`/products/edit/${uuid}`);
   };
 
   return (
@@ -102,7 +107,10 @@ const ListProducts = () => {
                         },
                       }}
                     >
-                      <FaEdit size={25} />
+                      <FaEdit
+                        size={25}
+                        onClick={() => handleEdit(product?.uuid)}
+                      />
                     </Box>
                     <Box
                       sx={{
