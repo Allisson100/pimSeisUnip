@@ -11,12 +11,14 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import MenuList from "../MenuList";
 import FilterHeader from "../../default/FilterHeader";
 import { Grid } from "@mui/material";
 
 const drawerWidth = 300;
+
+const pathListShowSearchInput = ["/products"];
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -66,6 +68,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const MenuDrawer = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const { pathname } = useLocation();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -97,9 +100,11 @@ const MenuDrawer = () => {
                 Loja Geek PIMVI
               </Typography>
             </Grid>
-            <Grid item xs={6}>
-              <FilterHeader />
-            </Grid>
+            {pathListShowSearchInput.includes(pathname) && (
+              <Grid item xs={6}>
+                <FilterHeader />
+              </Grid>
+            )}
           </Grid>
         </Toolbar>
       </AppBar>

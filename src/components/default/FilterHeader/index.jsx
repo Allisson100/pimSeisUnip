@@ -1,12 +1,21 @@
 import { Grid, TextField, InputAdornment } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
+import useProducts from "../../../hooks/services/useProucts";
+import { ProductsContext } from "../../../contexts/ProductsContext";
 
 const FilterHeader = () => {
   const [inputValue, setInputValue] = useState("");
+  const { listProducts } = useProducts();
+  const { setProductsList } = useContext(ProductsContext);
 
-  const handleInputValue = (event) => {
+  const handleInputValue = async (event) => {
     setInputValue(event.target.value);
+  };
+
+  const handleFilter = async () => {
+    const datas = await listProducts(1, 20, inputValue);
+    setProductsList(() => datas?.products);
   };
 
   return (
@@ -21,7 +30,15 @@ const FilterHeader = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <Icon icon="ic:twotone-search" width={30} color="#ffffff" />
+                <Icon
+                  icon="ic:twotone-search"
+                  width={30}
+                  color="#ffffff"
+                  onClick={handleFilter}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
               </InputAdornment>
             ),
             style: {
