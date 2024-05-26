@@ -5,7 +5,9 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import DefaultPage from "../components/RouterComponents/DefaultPage";
 import PrivateRoute from "../components/RouterComponents/PrivateRoute";
-import Products from "../pages/Products";
+import Products from "../pages/Products/CreateNewProduct";
+import ListProducts from "../pages/Products/ListProducts";
+import CreateNewProduct from "../pages/Products/CreateNewProduct";
 
 const AppRouter = () => {
   return (
@@ -26,7 +28,15 @@ const AppRouter = () => {
           path="/products"
           element={
             <PrivateRoute>
-              <Products />
+              <ListProducts />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/products/create"
+          element={
+            <PrivateRoute>
+              <CreateNewProduct />
             </PrivateRoute>
           }
         />

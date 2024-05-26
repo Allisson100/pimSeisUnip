@@ -58,8 +58,41 @@ const useProducts = () => {
     }
   };
 
+  const listProducts = async (page = 1, size = 20, searchingFor = "") => {
+    setIsLoading(true);
+    try {
+      let response;
+
+      if (searchingFor !== "") {
+        response = await axios.get(
+          `http://localhost:8000/products/list/${page}/${size}?searchingFor=${searchingFor}`
+        );
+      } else {
+        response = await axios.get(
+          `http://localhost:8000/products/list/${page}/${size}`
+        );
+      }
+
+      if (response?.data?.success) {
+        return response.data;
+      } else {
+        throw new Error(
+          response?.data?.message || "Erro ao buscar lista de produtos."
+        );
+      }
+    } catch (error) {
+      setSnackBarMessage({
+        message: error?.message || "Erro ao buscar lista de produtos.",
+        severity: "error",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     createProduct,
+    listProducts,
     isLoading,
   };
 };

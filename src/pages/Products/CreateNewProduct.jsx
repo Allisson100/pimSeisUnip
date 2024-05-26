@@ -1,14 +1,7 @@
 import * as Yup from "yup";
 import { Form, FormikProvider, useFormik } from "formik";
 
-import {
-  Box,
-  Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-  Autocomplete,
-} from "@mui/material";
+import { Grid, TextField, InputAdornment, Autocomplete } from "@mui/material";
 import { MuiFileInput } from "mui-file-input";
 import { LoadingButton } from "@mui/lab";
 import InputMask from "react-input-mask";
@@ -31,7 +24,7 @@ const categoryList = [
   },
 ];
 
-const Products = () => {
+const CreateNewProduct = () => {
   const { createProduct, isLoading } = useProducts();
 
   const productsValidationSchema = Yup.object().shape({
@@ -73,7 +66,7 @@ const Products = () => {
   const {
     errors,
     touched,
-    isSubmitting,
+
     handleSubmit,
     getFieldProps,
     setFieldValue,
@@ -224,7 +217,7 @@ const Products = () => {
               sx={{ width: "30%" }}
             >
               {" "}
-              Cadastrar Peça{" "}
+              Cadastrar{" "}
             </LoadingButton>
           </Grid>
         </Grid>
@@ -233,4 +226,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default CreateNewProduct;
