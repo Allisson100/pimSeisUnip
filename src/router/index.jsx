@@ -10,6 +10,7 @@ import ListProducts from "../pages/Products/ListProducts";
 import CreateNewProduct from "../pages/Products/CreateNewProduct";
 import EditProduct from "../pages/Products/EditProduct";
 import CreateNewClient from "../pages/Clients/CreateNewClient";
+import ListSales from "../pages/Financial/ListSales";
 
 const AppRouter = () => {
   return (
@@ -78,7 +79,7 @@ const AppRouter = () => {
           path="/financial"
           element={
             <PrivateRoute>
-              <Home />
+              <ListSales />
             </PrivateRoute>
           }
         />
