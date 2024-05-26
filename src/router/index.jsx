@@ -9,6 +9,7 @@ import Products from "../pages/Products/CreateNewProduct";
 import ListProducts from "../pages/Products/ListProducts";
 import CreateNewProduct from "../pages/Products/CreateNewProduct";
 import EditProduct from "../pages/Products/EditProduct";
+import CreateNewClient from "../pages/Clients/CreateNewClient";
 
 const AppRouter = () => {
   return (
@@ -54,6 +55,14 @@ const AppRouter = () => {
           element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/clients/create"
+          element={
+            <PrivateRoute>
+              <CreateNewClient />
             </PrivateRoute>
           }
         />
